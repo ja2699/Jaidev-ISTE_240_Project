@@ -1,0 +1,62 @@
+<html>
+<head>
+    <title>jQuery Get API - 10 Items in a Table</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Todo List (10 items from API)</h1>
+<button id="fetchButton">Get 10 Todos</button>
+<div id="result">
+    <!-- Table will be inserted here -->
+</div>
+<script>
+    $("#fetchButton").click(function () {
+        var apiURL = "https://jsonplaceholder.typicode.com/todos?_limit=10";
+        $.get(apiURL, function (data) {
+            var htmlTable = "<table>";
+            htmlTable += "<tr>";
+            htmlTable += "<th>ID</th>";
+            htmlTable += "<th>Title</th>";
+            htmlTable += "<th>Completed</th>";
+            htmlTable += "</tr>";
+
+
+            for (var i = 0; i < data.length; i++) {
+                var line = data[i];
+                htmlTable += "<tr>";
+                htmlTable += "<td>" +line.id+ "</td>>"
+                htmlTable += "<td>" +line.title+ "</td>>"
+                htmlTable += "<td>" +line.completed+ "</td>>"
+                htmlTable += "</tr>";
+
+            }
+            htmlTable += "</table>";
+
+            $("#result").html(htmlTable);
+        })
+    })
+</script>
+
+
+</body>
+</html>

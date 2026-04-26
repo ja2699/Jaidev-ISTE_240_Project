@@ -1,10 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <title>jQuery Get API Example</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
-$END$
+
+<h1>Fetch API Data with jQuery</h1>
+<button id="fetchButton">Get Todo</button>
+<div id="result"></div>
+<!--https://jsonplaceholder.typicode.com/todos/2-->
+
+<script>
+    $("#fetchButton").click(
+        function () {
+            let apiURL = "https://jsonplaceholder.typicode.com/todos/2";
+            $.get(apiURL, function(data){
+                $("result").html(`Your task is ${data.id}, and title is ${data.title}`);
+            });
+
+        });
+</script>
+
+
 </body>
 </html>
