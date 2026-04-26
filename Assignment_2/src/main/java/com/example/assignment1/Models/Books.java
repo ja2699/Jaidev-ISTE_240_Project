@@ -1,12 +1,16 @@
 package com.example.assignment1.model;
 
-import org.springframework.stereotype.Component;
+import jakarta.persistence.*;
 
-@Component
+@Entity
+@Table(name = "Books_Table")
 public class Books {
-    public String bookName;
-    public String bookAuthor;
-    public int bookID;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int bookID;
+    private String bookName;
+    private String bookAuthor;
 
     public int getBookID() { return bookID; }
     public void setBookID(int bookID) { this.bookID = bookID; }

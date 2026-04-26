@@ -1,24 +1,27 @@
-package com.example.assignment1.model;
+package com.example.assignment1.Models;
 
-import org.springframework.stereotype.Component;
-
+import jakarta.persistence.*;
 import java.time.LocalDate;
 
-@Component
+@Entity
+@Table(name = "Member_Table")
 public class Member {
-    public String memberFName;
-    public String memberLName;
-    public int memberID;
-    public LocalDate memberJoinDate;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int memberID;
+    private String memberFName;
+    private String memberLName;
+    private LocalDate memberJoinDate;
+
+    public int getMemberID() { return memberID; }
+    public void setMemberID(int memberID) { this.memberID = memberID; }
 
     public String getMemberFName() { return memberFName; }
     public void setMemberFName(String memberFName) { this.memberFName = memberFName; }
 
     public String getMemberLName() { return memberLName; }
     public void setMemberLName(String memberLName) { this.memberLName = memberLName; }
-
-    public int getMemberID() { return memberID; }
-    public void setMemberID(int memberID) { this.memberID = memberID; }
 
     public LocalDate getMemberJoinDate() { return memberJoinDate; }
     public void setMemberJoinDate(LocalDate memberJoinDate) { this.memberJoinDate = memberJoinDate; }
