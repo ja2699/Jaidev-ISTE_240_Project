@@ -1,7 +1,7 @@
-package com.example.assignment1.Controllers;
+package com.example.assignment3.Controllers;
 
-import com.example.assignment1.Models.Books;
-import com.example.assignment1.Services.Book_Service;
+import com.example.assignment3.Models.Books;
+import com.example.assignment3.Services.Book_Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/index/books")
+@RequestMapping("/api/books")
 public class Book_Controller {
     @Autowired
     private Book_Service bookService;

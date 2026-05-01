@@ -1,6 +1,6 @@
-package com.example.assignment1.Repositories;
+package com.example.assignment3.Repositories;
 
-import com.example.assignment1.Models.Member;
+import com.example.assignment3.Models.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

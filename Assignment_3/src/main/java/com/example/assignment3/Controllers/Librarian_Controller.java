@@ -1,7 +1,7 @@
-package com.example.assignment1.Controllers;
+package com.example.assignment3.Controllers;
 
-import com.example.assignment1.Models.Librarian;
-import com.example.assignment1.Services.Librarian_Service;
+import com.example.assignment3.Models.Librarian;
+import com.example.assignment3.Services.Librarian_Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/index/librarians")
+@RequestMapping("/api/librarians")
 public class Librarian_Controller {
     @Autowired
     private Librarian_Service librarian_Service;

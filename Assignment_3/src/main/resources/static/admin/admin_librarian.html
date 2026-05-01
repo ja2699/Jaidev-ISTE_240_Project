@@ -62,7 +62,6 @@
     <button class="exit-admin" onclick="window.location.href='/index/staff'">Exit Admin Mode</button>
 </div>
 <nav>
-    <a href="/index" class="nav-logo">Readers <span>Public Library</span></a>
     <ul class="nav-links">
         <li><a href="/index">Home</a></li>
         <li><a href="/index/books/admin">Books Catalogue</a></li>
@@ -124,7 +123,7 @@
 
     async function loadStaff() {
         try {
-            const res = await fetch('/index/librarians');
+            const res = await fetch('/api/librarians');
             allStaff = await res.json();
             renderTable(allStaff);
         } catch(e) {
@@ -175,7 +174,7 @@
         const librarianName = document.getElementById('fieldName').value.trim();
         if (!librarianName) { alert('Please enter a name.'); return; }
         const body = { librarianName };
-        const url = editingId ? `/index/librarians/${editingId}` : '/index/librarians';
+        const url = editingId ? `/api/librarians/${editingId}` : '/api/librarians';
         const method = editingId ? 'PUT' : 'POST';
         try {
             await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
@@ -188,7 +187,7 @@
 
     async function confirmDelete() {
         try {
-            await fetch(`/index/librarians/${deletingId}`, { method: 'DELETE' });
+            await fetch(`/api/librarians/${deletingId}`, { method: 'DELETE' });
             document.getElementById('deleteModal').classList.remove('active');
             deletingId = null;
             loadStaff();

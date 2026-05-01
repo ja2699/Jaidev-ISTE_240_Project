@@ -1,8 +1,8 @@
-package com.example.assignment1.Services;
+package com.example.assignment3.Services;
 
-import com.example.assignment1.Models.BorrowingHistory;
-import com.example.assignment1.Models.Member;
-import com.example.assignment1.Repositories.Borrowing_Repo;
+import com.example.assignment3.Models.BorrowingHistory;
+import com.example.assignment3.Models.Member;
+import com.example.assignment3.Repositories.Borrowing_Repo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;

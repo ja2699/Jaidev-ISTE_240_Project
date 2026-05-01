@@ -61,7 +61,6 @@
     <button class="exit-admin" onclick="window.location.href='/index/members'">Exit Admin Mode</button>
 </div>
 <nav>
-    <a href="/index" class="nav-logo">Readers <span>Public Library</span></a>
     <ul class="nav-links">
         <li><a href="/index">Home</a></li>
         <li><a href="/index/books/admin">Books Catalogue</a></li>
@@ -124,7 +123,7 @@
 
     async function loadMembers() {
         try {
-            const res = await fetch('/index/members');
+            const res = await fetch('/api/members');
             allMembers = await res.json();
             renderTable(allMembers);
         } catch(e) {
@@ -183,7 +182,7 @@
         const memberJoinDate = document.getElementById('fieldJoinDate').value;
         if (!memberFName || !memberLName || !memberJoinDate) { alert('Please fill in all fields.'); return; }
         const body = { memberFName, memberLName, memberJoinDate };
-        const url = editingId ? `/index/members/${editingId}` : '/index/members';
+        const url = editingId ? `/api/members/${editingId}` : '/api/members';
         const method = editingId ? 'PUT' : 'POST';
         try {
             await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });

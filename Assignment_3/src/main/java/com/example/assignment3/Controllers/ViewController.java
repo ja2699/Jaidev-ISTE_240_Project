@@ -1,4 +1,4 @@
-package com.example.assignment1.Controllers;
+package com.example.assignment3.Controllers;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
