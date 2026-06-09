@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Recently Borrowed – Readers Public Library</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #0a0a0a; color: #e8e8e0; font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+        nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: space-between; padding: 0 2.5rem; height: 64px; }
+        .nav-logo span { color: #7ec88a; }
+        .nav-links { display: flex; gap: 0.25rem; list-style: none; }
+        .nav-links a { display: block; padding: 0.45rem 1rem; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.9rem; font-weight: 400; border-radius: 8px; transition: background 0.2s, color 0.2s, transform 0.2s; }
+        .nav-links a:hover { background: rgba(126,200,138,0.15); color: #7ec88a; transform: scale(1.05); }
+        .page-content { max-width: 1100px; margin: 0 auto; padding: 6rem 2rem 4rem; }
+        .page-title { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: #fff; margin-bottom: 0.5rem; }
+        .page-subtitle { font-size: 0.9rem; color: rgba(255,255,255,0.4); margin-bottom: 2rem; }
+        .search-bar { margin-bottom: 1.5rem; display: flex; gap: 0.75rem; align-items: center; }
+        .ui.input input { background: rgba(255,255,255,0.05) !important; border: 1px solid rgba(255,255,255,0.1) !important; border-radius: 10px !important; color: #fff !important; font-family: 'DM Sans', sans-serif !important; width: 320px; }
+        .ui.input input::placeholder { color: rgba(255,255,255,0.3) !important; }
+        .ui.input input:focus { border-color: #7ec88a !important; outline: none !important; }
+        .table-wrapper { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; overflow: hidden; }
+        .ui.celled.table { background: transparent !important; color: #e8e8e0 !important; border: none !important; margin: 0 !important; }
+        .ui.celled.table thead th { background: rgba(255,255,255,0.04) !important; color: rgba(255,255,255,0.5) !important; border-color: rgba(255,255,255,0.07) !important; font-size: 0.75rem !important; letter-spacing: 0.1em !important; text-transform: uppercase !important; font-weight: 500 !important; padding: 1rem 1.25rem !important; }
+        .ui.celled.table tbody td { background: transparent !important; color: #e8e8e0 !important; border-color: rgba(255,255,255,0.05) !important; padding: 1rem 1.25rem !important; font-size: 0.92rem !important; }
+        .ui.celled.table tbody tr:hover td { background: rgba(126,200,138,0.04) !important; }
+        .no-results { text-align: center; padding: 3rem; color: rgba(255,255,255,0.3); font-size: 0.9rem; }
+        .modal h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: #fff; margin-bottom: 0.5rem; }
+        .modal p { font-size: 0.85rem; color: rgba(255,255,255,0.4); margin-bottom: 1.5rem; }
+        .modal input { width: 100%; padding: 0.75rem 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #fff; font-size: 0.95rem; margin-bottom: 1rem; outline: none; font-family: 'DM Sans', sans-serif; }
+        .modal input:focus { border-color: #7ec88a; }
+    </style>
+</head>
+<body>
+<nav>
+    <ul class="nav-links">
+        <li><a href="/index.html">Home</a></li>
+        <li><a href="/index/books.html">Books Catalogue</a></li>
+        <li><a href="/index/members.html">Members List</a></li>
+        <li><a href="/index/borrowing.html">Recently Borrowed</a></li>
+        <li><a href="/index/librarian.html">Our Staff</a></li>
+    </ul>
+</nav>
+
+<div class="page-content">
+    <h1 class="page-title">Recently Borrowed</h1>
+    <div class="search-bar">
+        <div class="ui input">
+            <input type="text" id="searchInput" placeholder="Search by borrow date (e.g. 2024-01-15)..." oninput="handleSearch()"/>
+        </div>
+    </div>
+
+    <div class="table-wrapper">
+        <table class="ui celled table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Member</th>
+                <th>Book</th>
+                <th>Borrow Date</th>
+                <th>Return Date</th>
+            </tr>
+            </thead>
+            <tbody id="borrowedTableBody">
+            <tr><td colspan="5" class="no-results">Enter a borrow date to search.</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function renderTable(records) {
+        const tbody = document.getElementById('borrowedTableBody');
+        if (!records || records.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" class="no-results">No records found.</td></tr>';
+            return;
+        }
+        tbody.innerHTML = records.map(r => `
+        <tr>
+          <td data-label="ID">${r.id}</td>
+          <td data-label="Member">${r.member ? r.member.memberFName + ' ' + r.member.memberLName : '—'}</td>
+          <td data-label="Book">${r.book ? r.book.bookName : '—'}</td>
+          <td data-label="Borrow Date">${r.borrowDate ?? '—'}</td>
+          <td data-label="Return Date">${r.returnDate ?? 'Not returned'}</td>
+        </tr>
+      `).join('');
+    }
+
+    async function handleSearch() {
+        const query = document.getElementById('searchInput').value.trim();
+        if (!query) {
+            document.getElementById('borrowedTableBody').innerHTML = '<tr><td colspan="5" class="no-results">Enter a borrow date to search.</td></tr>';
+            return;
+        }
+        try {
+            const res = await fetch(`/api/borrowing/search?borrowDate=${encodeURIComponent(query)}`);
+            const results = await res.json();
+            renderTable(results);
+        } catch(e) { console.error('Search failed', e); }
+    }
+</script>
+</body>
+</html>

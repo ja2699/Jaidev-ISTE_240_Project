@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Readers Public Library</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #0a0a0a;
+            color: #e8e8e0;
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+        }
+
+        /* ── NAVBAR ── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2.5rem;
+            height: 64px;
+        }
+
+        .nav-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: #fff;
+            letter-spacing: 0.04em;
+            text-decoration: none;
+        }
+
+        .nav-logo span { color: #7ec88a; }
+
+        .nav-links {
+            display: flex;
+            gap: 0.25rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            display: block;
+            padding: 0.45rem 1rem;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 400;
+            border-radius: 8px;
+            transition: background 0.2s, color 0.2s, transform 0.2s;
+            letter-spacing: 0.02em;
+        }
+
+        .nav-links a:hover {
+            background: rgba(126,200,138,0.15);
+            color: #7ec88a;
+            transform: scale(1.05);
+        }
+
+        .nav-owner {
+            font-size: 0.78rem;
+            color: rgba(255,255,255,0.3);
+            text-decoration: none;
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 0.3rem 0.85rem;
+            border-radius: 20px;
+            transition: all 0.2s;
+            cursor: pointer;
+            background: none;
+        }
+
+        .nav-owner:hover {
+            border-color: #7ec88a;
+            color: #7ec88a;
+        }
+
+        /* ── heading ── */
+        .heading {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .heading-bg {
+            position: absolute;
+            inset: 0;
+            background-image: url('images/Background.png');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.45);
+        }
+
+        .heading-gradient {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom,
+            rgba(10,10,10,0.2) 0%,
+            rgba(10,10,10,0.1) 40%,
+            rgba(10,10,10,0.7) 75%,
+            rgba(10,10,10,1) 100%
+            );
+        }
+
+        .heading-content {
+            position: relative;
+            text-align: center;
+            padding: 2rem;
+            max-width: 720px;
+        }
+
+
+        .heading-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.8rem, 6vw, 5rem);
+            font-weight: 600;
+            line-height: 1.1;
+            color: #fff;
+            margin-bottom: 1.4rem;
+        }
+
+        .heading-subtitle {
+            font-size: 1.05rem;
+            color: rgba(255,255,255,0.6);
+            font-weight: 300;
+            line-height: 1.7;
+            max-width: 520px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .heading-cta {
+            display: inline-block;
+            padding: 0.75rem 2rem;
+            background: #7ec88a;
+            color: #0a0a0a;
+            border-radius: 30px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .heading-cta:hover {
+            background: #9dd6a8;
+            transform: translateY(-2px);
+        }
+
+
+        /* ── SECTION ── */
+        .section {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #7ec88a;
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: #fff;
+            margin-bottom: 3rem;
+        }
+
+        /* ── INFO SECTION ── */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .info-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        .info-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        .info-card p {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.5);
+            line-height: 1.8;
+        }
+
+
+        /* ── FOOTER ── */
+        footer {
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding: 2rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.2);
+        }
+
+        /* ── PASSWORD MODAL ── */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            z-index: 999;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal {
+            background: #141414;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 2.5rem;
+            width: 360px;
+            text-align: center;
+        }
+
+        .modal h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal p {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 1.5rem;
+        }
+
+        .modal input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            outline: none;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .modal input:focus {
+            border-color: #7ec88a;
+        }
+
+        .modal-error {
+            font-size: 0.82rem;
+            color: #e07070;
+            margin-bottom: 0.75rem;
+            display: none;
+        }
+
+        .modal-error.visible { display: block; }
+
+        .modal-buttons {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn-cancel {
+            flex: 1;
+            padding: 0.65rem;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            color: rgba(255,255,255,0.5);
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .btn-cancel:hover { border-color: rgba(255,255,255,0.3); color: #fff; }
+
+        .btn-enter {
+            flex: 1;
+            padding: 0.65rem;
+            background: #7ec88a;
+            border: none;
+            border-radius: 10px;
+            color: #0a0a0a;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .btn-enter:hover { background: #9dd6a8; }
+
+        @media (max-width: 768px) {
+            .info-grid { grid-template-columns: 1fr; }
+            nav { padding: 0 1.25rem; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+    <a href="/api.html" class="nav-logo">Readers <span>Public Library</span></a>
+    <ul class="nav-links">
+        <li><a href="/index.html">Home</a></li>
+        <li><a href="/index/books.html">Books Catalogue</a></li>
+        <li><a href="/index/members.html">Members List</a></li>
+        <li><a href="/index/borrowing.html">Recently Borrowed</a></li>
+        <li><a href="/index/librarian.html">Our Staff</a></li>
+    </ul>
+    <button class="nav-owner" onclick="document.getElementById('adminModal').classList.add('active')">
+        Website Owner
+    </button>
+</nav>
+
+<!-- heading -->
+<section class="heading">
+    <div class="heading-bg"></div>
+    <div class="heading-gradient"></div>
+    <div class="heading-content">
+        <h1 class="heading-title">Welcome To<br/>Readers Public Library</h1>
+        <p class="heading-subtitle">
+            Discover thousands of books, manage your membership, and explore our ever growing collection.
+        </p>
+        <a href="/books.html" class="heading-cta">Browse the Catalogue</a>
+    </div>
+</section>
+
+
+<!-- INFO SECTION -->
+<div class="section" style="padding-top: 2rem;">
+    <p class="section-label">About Us</p>
+    <h2 class="section-title">Library Information</h2>
+    <div class="info-grid">
+        <div class="info-card">
+            <h3>About our Library</h3>
+            <p>Readers Public Library has been serving the community since 1984.
+                We offer a wide selection of fiction, non-fiction, academic texts and digital resources.
+                Membership is free and open everyone.<br><br> Happy Reading :D</p>
+        </div>
+        <div class="info-card">
+            <h3>Borrowing Policy</h3>
+            <p>Members may borrow up to 3 books at a time for a period of 3 weeks.
+                Renewals are available once per borrowing period.
+                Late returns will incur a small fee that adds up for each day youre late.</p>
+        </div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <div style="max-width:1100px; margin:0 auto; display:flex; flex-wrap:wrap; justify-content:space-between; gap:2rem; padding-bottom:2rem; border-bottom:1px solid rgba(255,255,255,0.06); margin-bottom:1.5rem;">
+        <div>
+            <div style="font-family:'Playfair Display',serif; font-size:1.1rem; color:#fff; margin-bottom:0.5rem;">Readers Public Library</div>
+            <div style="font-size:0.83rem; color:rgba(255,255,255,0.35); line-height:1.8;">
+                📍 Shk. Salman St, Dubai<br/>
+                📞 (+971) 55 4006542<br/>
+                ✉️ info@readerspubliclibrary.com
+            </div>
+        </div>
+        <div>
+            <div style="font-size:0.75rem; letter-spacing:0.12em; text-transform:uppercase; color:#7ec88a; margin-bottom:0.75rem;">Opening Hours</div>
+            <div style="font-size:0.83rem; color:rgba(255,255,255,0.4); line-height:2;">
+                Monday – Friday <span style="color:#7ec88a;">8:00 AM – 9:00 PM</span><br/>
+                Saturday <span style="color:#7ec88a;">9:00 AM – 7:00 PM</span><br/>
+                Sunday <span style="color:#7ec88a;">10:00 AM – 5:00 PM</span>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- ADMIN PASSWORD MODAL -->
+<div class="modal-overlay" id="adminModal">
+    <div class="modal">
+        <h3>Website Owner</h3>
+        <p>Enter the admin password to access the management panel.</p>
+        <input type="password" id="adminPassword" placeholder="Password" onkeydown="if(event.key==='Enter') checkPassword()"/>
+        <div class="modal-error" id="modalError">Incorrect password. Please try again.</div>
+        <div class="modal-buttons">
+            <button class="btn-cancel" onclick="document.getElementById('adminModal').classList.remove('active'); document.getElementById('adminPassword').value=''; document.getElementById('modalError').classList.remove('visible');">Cancel</button>
+            <button class="btn-enter" onclick="checkPassword()">Enter</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const ADMIN_PASSWORD = 'admin123';
+
+    function checkPassword() {
+        const input = document.getElementById('adminPassword').value;
+        const error = document.getElementById('modalError');
+        if (input === ADMIN_PASSWORD) {
+            window.location.href = '/index/books/admin';
+        } else {
+            error.classList.add('visible');
+            document.getElementById('adminPassword').value = '';
+        }
+    }
+</script>
+</body>
+</html>
